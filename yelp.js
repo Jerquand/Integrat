@@ -94,6 +94,28 @@ module.exports = function(yelpOptions) {
     consumerKey: object.for.your.consumerKey,
     consumerSecret: object.for.your.consumerSecret
   });
+  module.exports = function(query, cb) {
+
+    var options = {
+        hostname: 'https://api.yelp.com/v3/businesses/search',
+        path: '/maps/api/geocode/json?address=' + encodeURIComponent(query) + '&sensor=false'
+    };
+
+    http.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => {
+            data += chuck;
+        });
+        res.on('end', () => {
+            data = JSON.parse(data);
+            if(data.results.length) {
+                cb(null, data.results[0].geometry.location);
+            } else {
+                cb("No results found.", null);
+            }
+        })
+    })
+}
   
   yelp.search('#basketball', 10, result => {
   });
@@ -142,4 +164,4 @@ module.exports = function(yelpOptions) {
         "longitude": -122.42820739746094
       }
     }
-  }
+  } 
