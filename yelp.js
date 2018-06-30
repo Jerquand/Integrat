@@ -33,7 +33,7 @@ module.exports = function(yelpOptions) {
     ).toString('base64');
   
     const options = {
-      hostname: 'api.yelp.com',
+      hostname: 'https://api.yelp.com/v3/businesses/search',
       port: 443,
       method: 'POST',
       path: '/oauth2/token?grant_type=client_credentials',
@@ -64,11 +64,11 @@ module.exports = function(yelpOptions) {
     search: function(query, count, cb) {
       getAccessToken(accessToken => {
         var options = {
-          hostname: 'api.yelp.com',
+          hostname: 'https://api.yelp.com/v3/businesses/search',
           port: 443,
           method: 'GET',
           path:
-            '/1.1/search/tweets.json?q=' +
+            '/1.1/search/businesses.json?q=' +
             encodeURIComponent(query) +
             '&count=' +
             (count || 10),
@@ -90,12 +90,56 @@ module.exports = function(yelpOptions) {
       });
     }
   };
-  const yelp = require('./twitter')({
+  const yelp = require('./yelp')({
     consumerKey: object.for.your.consumerKey,
     consumerSecret: object.for.your.consumerSecret
   });
   
   yelp.search('#basketball', 10, result => {
-    // here you will decide what to do with your newly acquired tweets
-    // They should come back in result.statuses
   });
+//   Response Body
+{
+    "total": 8228,
+    "businesses": [
+      {
+        "rating": 4,
+        "price": "$",
+        "phone": "+14152520800",
+        "id": "E8RJkjfdcwgtyoPMjQ_Olg",
+        "alias": "four-barrel-coffee-san-francisco",
+        "is_closed": false,
+        "categories": [
+          {
+            "alias": "coffee",
+            "title": "Coffee & Tea"
+          }
+        ],
+        "review_count": 1738,
+        "name": "Four Barrel Coffee",
+        "url": "https://www.yelp.com/biz/four-barrel-coffee-san-francisco",
+        "coordinates": {
+          "latitude": 37.7670169511878,
+          "longitude": -122.42184275
+        },
+        "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
+        "location": {
+          "city": "San Francisco",
+          "country": "US",
+          "address2": "",
+          "address3": "",
+          "state": "CA",
+          "address1": "375 Valencia St",
+          "zip_code": "94103"
+        },
+        "distance": 1604.23,
+        "transactions": ["pickup", "delivery"]
+      },
+      
+    ],
+    "region": {
+      "center": {
+        "latitude": 37.767413217936834,
+        "longitude": -122.42820739746094
+      }
+    }
+  }
